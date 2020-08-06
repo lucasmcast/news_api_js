@@ -1,5 +1,5 @@
 import { NewsDAO } from "./newsDAO.js";
-
+import { SubjectQueryView } from "./subjectQueryView.js";
 /**
  * Class makes the control between the views and DAO class
  * @author Lucas Martins de Castro <lucas.martins.c03@gmail.com>
@@ -8,8 +8,16 @@ import { NewsDAO } from "./newsDAO.js";
 export class NewsController {
   constructor() {
     this.newsDao = new NewsDAO();
+    // this.addPageFunctionalities();
   }
-
+  addPageFunctionalities = () => {
+    let subjectQueryView = new SubjectQueryView();
+    let subjectQueryButton = document.getElementById("subject-search-button");
+    subjectQueryButton.addEventListener(
+      "click",
+      subjectQueryView.renderQuery()
+    );
+  };
   /**
    * Get data from API
    * @link <https://newsapi.org>
@@ -25,8 +33,8 @@ export class NewsController {
     const data = await response.json();
     return data;
   }
-  async getSubjectQueryNewsApi() {
-    var response = await this.newsDao.getSubjectQueryNewsApi();
+  async getSubjectQueryNewsApi(subject) {
+    var response = await this.newsDao.getSubjectQueryNewsApi(subject);
     const data = await response.json();
     return data;
   }

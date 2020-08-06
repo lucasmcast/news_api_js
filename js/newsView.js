@@ -65,7 +65,6 @@ export class NewsView {
    * @param {Function} callback - Function callback click button
    * @see NewsView.createCards()
    */
-  subjectQuery(event) {}
   setNewsCards(news, callback) {
     const container = document.getElementsByClassName("container");
 
