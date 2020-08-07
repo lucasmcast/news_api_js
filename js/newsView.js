@@ -1,6 +1,7 @@
 import { NewsController } from "./newsController.js";
 import { CardModel } from "./cardModel.js";
 import { News } from "./newsModel.js";
+import { data } from "./countries-pt.js";
 
 /**Class responsible for renders data in the html page and call class NewsController
  * @author Lucas Martins de Castro <lucas.martins.c03@gmail.com>
@@ -10,8 +11,30 @@ import { News } from "./newsModel.js";
 export class NewsView {
   constructor() {
     this.controller = new NewsController();
+    this.addPageFunctionalities();
   }
+  addPageFunctionalities = () => {
+    let subjectQueryButton = document.getElementById("subject-search-button");
+    let countryQueryButton = document.getElementById("country-search-button");
+    subjectQueryButton.addEventListener("click", () => {
+      let subjectQueryInput = document.getElementById("subject-input").value;
+    });
+    countryQueryButton.addEventListener("click", () => {
+      /*   let cardsList = document.getElementsByClassName("card");
+      this.hideCards(cardsList); */
+      let countryQueryInput = document.getElementById("country-input").value;
+      let sigla = this.controller.getAbbreviation(countryQueryInput, data);
+      this.renderNewsCountries(sigla);
+    });
+  };
 
+  async renderNewsCountries(sigla) {
+    let info = await this.controller.getCountryQueryNewsApi(sigla);
+    let data = info.articles;
+    this.createCards(data, "Salvar", (noticia) => {
+      this.clickBotao(noticia);
+    });
+  }
   /**Render the news call methodo createCards whith parameter data, nameButton and callback*/
   async renderNews() {
     const response = await this.controller.getTopNewsApi();
@@ -21,18 +44,29 @@ export class NewsView {
     });
   }
 
+  hideCards(cardsList) {
+    let i;
+    for (i = 0; i < cardsList.length; i++) {
+      this.hideCard(cardsList[i]);
+    }
+  }
+
+  hideCard(card) {
+    card.remove();
+    // card.parentNode.removeChild(card);
+  }
   /**Creates cards in the html page by length data from api
    * @param {Object} data - data returns from api
    * @param {String} nameButton - name for to create button
    * @param {Function} callback - Function callback click button
    */
   createCards(data, nameButton, callback) {
+    console.log(data);
     let loader = document.getElementById("loader");
     loader.style.display = "none";
-    //console.log(data)
+    document.getElementById("cards").innerHTML = "";
     let news = [];
     let qtdData = data.length;
-    //console.log(qtdData)
     for (let i = 0; i < qtdData; i++) {
       let card = new CardModel();
       let buttonSalvar = card.createButton(nameButton);
@@ -48,7 +82,6 @@ export class NewsView {
 
       news.push(noticia);
     }
-
     this.setNewsCards(news, callback);
   }
 
@@ -68,19 +101,19 @@ export class NewsView {
   setNewsCards(news, callback) {
     const container = document.getElementsByClassName("container");
 
+    console.log(news.length);
     for (let i = 0; i < news.length; i++) {
       var cards = container.cards.children;
       let card = cards[i];
       let contentCard = card.querySelectorAll("div");
       contentCard[0].children[0].children[0].href = news[i].getUrl();
       contentCard[0].children[0].children[0].innerHTML = news[i].getTitle();
-
       let content = contentCard[1].children;
+      console.log(news[i].getDescription());
       content[0].innerHTML = news[i].getDescription();
       content[1].src = news[i].getUrlImage();
 
       let footer = contentCard[2].children;
-      //console.log(footer);
       footer[0].innerHTML = news[i].getPublishedAt();
       footer[1].innerHTML = news[i].getAuthor();
       let noticia = news[i];

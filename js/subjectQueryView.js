@@ -1,15 +1,15 @@
 import { NewsController } from "./newsController.js";
+import { NewsView } from "./newsView.js";
 
 export class SubjectQueryView {
   constructor() {
     this.controller = new NewsController();
+    this.view = new NewsView();
   }
   async renderQuery() {
-    let querySubject = document.getElementById("subject-input").value;
-    const response = await this.controller.getSubjectQueryNewsApi(querySubject);
-    let data = response.articles;
-    this.createCards(data, "Salvar", (noticia) => {
-      this.clickBotao(noticia);
+    const data = await this.controller.getAllNewsDB();
+    this.view.createCards(data, "Apagar", (news) => {
+      this.clickBotao(news);
     });
   }
 }

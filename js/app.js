@@ -21,7 +21,6 @@ class App {
    * @param {String} pathname path of route
    */
   route(pathname) {
-    console.log(pathname);
     switch (pathname) {
       case "/index.html":
         let view = new NewsView();
@@ -33,7 +32,7 @@ class App {
         break;
       case "/subjectQueryResult.html":
         let queryResult = new SubjectQueryView();
-        queryResult.renderView();
+        queryResult.renderQuery();
         break;
     }
   }

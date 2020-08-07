@@ -1,3 +1,7 @@
+/* .query-result-link {
+  margin:0;
+} */
+
 header {
   background: #4a148c;
   position: fixed;
@@ -108,6 +112,9 @@ footer {
   background: none;
   color: rgba(0, 0, 0, 0.4);
   padding-right: 15px;
+}
+.fg--search button a {
+  color: #666;
 }
 .fg--search button:hover {
   cursor: pointer;

@@ -1,5 +1,4 @@
 import { NewsDAO } from "./newsDAO.js";
-import { SubjectQueryView } from "./subjectQueryView.js";
 /**
  * Class makes the control between the views and DAO class
  * @author Lucas Martins de Castro <lucas.martins.c03@gmail.com>
@@ -8,16 +7,21 @@ import { SubjectQueryView } from "./subjectQueryView.js";
 export class NewsController {
   constructor() {
     this.newsDao = new NewsDAO();
-    // this.addPageFunctionalities();
   }
-  addPageFunctionalities = () => {
-    let subjectQueryView = new SubjectQueryView();
-    let subjectQueryButton = document.getElementById("subject-search-button");
-    subjectQueryButton.addEventListener(
-      "click",
-      subjectQueryView.renderQuery()
-    );
-  };
+
+  getAbbreviation(countryName, data) {
+    let i;
+    for (i = 0; i < data.length; i++) {
+      if (
+        data[i]["gentilico"].toUpperCase() == countryName.toUpperCase() ||
+        data[i]["nome_pais"].toUpperCase() == countryName.toUpperCase() ||
+        data[i]["nome_pais_int"].toUpperCase() == countryName.toUpperCase()
+      ) {
+        return data[i]["sigla"];
+      }
+    }
+  }
+
   /**
    * Get data from API
    * @link <https://newsapi.org>
@@ -28,8 +32,8 @@ export class NewsController {
     const data = await response.json();
     return data;
   }
-  async getCountryQueryNewsApi() {
-    var response = await this.newsDao.getCountryQueryNewsApi();
+  async getCountryQueryNewsApi(country) {
+    var response = await this.newsDao.getCountryQueryNewsApi(country);
     const data = await response.json();
     return data;
   }
