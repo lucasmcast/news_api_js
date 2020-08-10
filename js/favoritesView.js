@@ -1,4 +1,3 @@
-import { CardModel } from "./cardModel.js";
 import { NewsView } from "./newsView.js";
 import { NewsController } from "./newsController.js";
 
@@ -8,21 +7,15 @@ import { NewsController } from "./newsController.js";
  * @since 1.0.0
  * 
  */
-export class FavoritesView {
+export class FavoritesView extends NewsView{
 
-    constructor(){
-        this.controller = new NewsController();
-        this.view = new NewsView()
-        this.card = new CardModel()
-    }
-    
     /**
      * Obtains data from the database and renders cards with past data
      * @see NewsView.createCards()
      */
     async renderView(){
         const data = await this.controller.getAllNewsDB();
-        this.view.createCards(data, "Apagar", (news) => {
+        this.createCards(data, "Apagar", (news) => {
             this.clickBotao(news)
         });
     }

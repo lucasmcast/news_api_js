@@ -10,8 +10,8 @@ import { data } from "./countries-pt.js";
 export class NewsView {
   constructor() {
     this.controller = new NewsController();
-    this.addPageFunctionalities();
   }
+
   addPageFunctionalities = () => {
     let subjectQueryButton = document.getElementById("subject-search-button");
     let countryQueryButton = document.getElementById("country-search-button");
@@ -33,6 +33,7 @@ export class NewsView {
       this.clickBotao(noticia);
     });
   }
+
   async renderNewsCountries(sigla) {
     let info = await this.controller.getCountryQueryNewsApi(sigla);
     let data = info.articles;
@@ -40,8 +41,10 @@ export class NewsView {
       this.clickBotao(noticia);
     });
   }
+
   /**Render the news call methodo createCards whith parameter data, nameButton and callback*/
   async renderNews() {
+    this.addPageFunctionalities();
     const response = await this.controller.getTopNewsApi();
     let data = response.articles;
     this.createCards(data, "Salvar", (noticia) => {
@@ -49,16 +52,6 @@ export class NewsView {
     });
   }
 
-  hideCards(cardsList) {
-    let i;
-    for (i = 0; i < cardsList.length; i++) {
-      this.hideCard(cardsList[i]);
-    }
-  }
-
-  hideCard(card) {
-    card.remove();
-  }
   /**Creates cards in the html page by length data from api
    * @param {Object} data - data returns from api
    * @param {String} nameButton - name for to create button
@@ -67,13 +60,12 @@ export class NewsView {
   createCards(data, nameButton, callback) {
     let loader = document.getElementById("loader");
     loader.style.display = "none";
-    document.getElementById("cards").innerHTML = "";
-    let news = [];
+    //document.getElementById("cards").innerHTML = "";
+
+    let cards = [];
     let qtdData = data.length;
+    let card = new CardModel();
     for (let i = 0; i < qtdData; i++) {
-      let card = new CardModel();
-      let buttonSalvar = card.createButton(nameButton);
-      card.createCard(buttonSalvar);
       let noticia = new News();
       noticia.setTitle(data[i].title);
       noticia.setAuthor(data[i].author);
@@ -83,9 +75,11 @@ export class NewsView {
       noticia.setUrlImage(data[i].urlToImage);
       noticia.setUrl(data[i].url);
 
-      news.push(noticia);
+      let buttonSalvar = card.createButton(nameButton, callback, noticia);
+      cards.push(card.createCard(noticia, buttonSalvar));
     }
-    this.setNewsCards(news, callback);
+    card.setCards(cards);
+
   }
 
   /**Perform button action when clicking, in this case, saves data in the database.
@@ -94,32 +88,5 @@ export class NewsView {
   clickBotao(news) {
     this.controller.save(news);
   }
-  /**
-   * Fill cards with data from api after of criating cards
-   * @param {News} news - Class News Object
-   * @param {Function} callback - Function callback click button
-   * @see NewsView.createCards()
-   */
-  setNewsCards(news, callback) {
-    const container = document.getElementsByClassName("container");
 
-    for (let i = 0; i < news.length; i++) {
-      var cards = container.cards.children;
-      let card = cards[i];
-      let contentCard = card.querySelectorAll("div");
-      contentCard[0].children[0].children[0].href = news[i].getUrl();
-      contentCard[0].children[0].children[0].innerHTML = news[i].getTitle();
-      let content = contentCard[1].children;
-      content[0].innerHTML = news[i].getDescription();
-      content[1].src = news[i].getUrlImage();
-
-      let footer = contentCard[2].children;
-      footer[0].innerHTML = news[i].getPublishedAt();
-      footer[1].innerHTML = news[i].getAuthor();
-      let noticia = news[i];
-      footer[2].addEventListener("click", () => {
-        callback(noticia);
-      });
-    }
-  }
 }

@@ -32,11 +32,13 @@ export class NewsController {
     const data = await response.json();
     return data;
   }
+
   async getCountryQueryNewsApi(country) {
     var response = await this.newsDao.getCountryQueryNewsApi(country);
     const data = await response.json();
     return data;
   }
+  
   async getSubjectQueryNewsApi(subject) {
     var response = await this.newsDao.getSubjectQueryNewsApi(subject);
     const data = await response.json();

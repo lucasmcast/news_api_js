@@ -17,44 +17,57 @@ export class CardModel{
      * 
      * @param {DOMElement} button button of card
      */
-    createCard(button){
-            this.card = document.createElement('div');
-            this.cardHeader = document.createElement('div');
-            this.cardContent = document.createElement('div');
-            this.cardFooter = document.createElement('div');
+    createCard(news, button){
+        const link = React.createElement('a', {href: news.getUrl()}, news.getTitle());
+        const title = React.createElement('span', null, link);
+        const cardHeader = React.createElement(
+            'div', 
+            {
+                className: "card-header"
+            }, 
+            [title]
+        );
+        
+        const description = React.createElement('p', null, news.getDescription());
+        const img = React.createElement('img', {src: news.getUrlImage()});
+        
+        const cardContent = React.createElement(
+            'div', 
+            {
+                className: "card-content"
+            }, 
+            [description, img]
+        );
+        
+        const published = React.createElement('span', {className : 'card-published'}, news.getPublishedAt());
+        const author = React.createElement('span', {className: 'card-author'}, news.getAuthor());
+        
+        /* button.addEventListener("click", function() {
+            callback(news);
+        }); */
+        
+        const cardFooter = React.createElement(
+            'div',
+            {
+                className : "card-footer"
+            },
+            [published, author, button]
+        );
+        const card = React.createElement(
+            'div', 
+            {
+                className: "card"
+            }, 
+            [cardHeader, cardContent, cardFooter]
+        );
 
-            this.card.classList.add("card");
-            this.cardHeader.classList.add("card-header");
-            this.cardContent.classList.add("card-content");
-            this.cardFooter.classList.add("card-footer");
 
-            this.title = document.createElement("span");
-            this.link = document.createElement("a");
-            this.title.appendChild(this.link);
-            this.cardHeader.appendChild(this.title);
-
-            this.description = document.createElement("p");
-            this.img = document.createElement("img");
-            this.cardContent.append(this.description);
-            this.cardContent.append(this.img);
-
-            this.published = document.createElement("span");
-            this.published.classList.add("card-published");
-            this.author = document.createElement("span");
-            this.author.classList.add("card-author");
-    
-            this.cardFooter.appendChild(this.published);
-            this.cardFooter.appendChild(this.author);
-            this.cardFooter.appendChild(button);
-
-            this.card.appendChild(this.cardHeader);
-            this.card.appendChild(this.cardContent);
-            this.card.appendChild(this.cardFooter);
-
-            this.cards.appendChild(this.card);
-
+        return card;
     } 
-
+    
+    setCards(cards){
+        ReactDOM.render(cards, this.cards)
+    }
     /**
      * Creates button and put button value and creates class css
      * 
@@ -62,11 +75,14 @@ export class CardModel{
      * 
      * @returns DOMElement  
      */
-    createButton(nameButton){
-        let button = document.createElement("button");
-        button.innerHTML = nameButton
-        button.classList.add("btn-" + nameButton.toLowerCase());
-
+    createButton(nameButton, callback, news){
+        let button = React.createElement(
+            'button', 
+            {
+                className: 'btn-'+nameButton.toLocaleLowerCase(),
+                onClick: () => {callback(news)}
+            }, 
+            nameButton);
         return button;
     }
 
