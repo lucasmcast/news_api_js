@@ -1,6 +1,5 @@
 import { NewsView } from "./newsView.js";
 import { FavoritesView } from "./favoritesView.js";
-import { SubjectQueryView } from "./subjectQueryView.js";
 import { UnitTest } from "./tests.js";
 /**
  * Class responsible for initializing the application
@@ -29,10 +28,6 @@ class App {
       case "/favorites.html":
         let favorites = new FavoritesView();
         favorites.renderView();
-        break;
-      case "/subjectQueryResult.html":
-        let queryResult = new SubjectQueryView();
-        queryResult.renderQuery();
         break;
     }
   }

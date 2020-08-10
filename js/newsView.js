@@ -6,7 +6,6 @@ import { data } from "./countries-pt.js";
 /**Class responsible for renders data in the html page and call class NewsController
  * @author Lucas Martins de Castro <lucas.martins.c03@gmail.com>
  * @since 1.0.0
- *
  */
 export class NewsView {
   constructor() {
@@ -18,16 +17,22 @@ export class NewsView {
     let countryQueryButton = document.getElementById("country-search-button");
     subjectQueryButton.addEventListener("click", () => {
       let subjectQueryInput = document.getElementById("subject-input").value;
+      this.renderSubjectQuery(subjectQueryInput);
     });
     countryQueryButton.addEventListener("click", () => {
-      /*   let cardsList = document.getElementsByClassName("card");
-      this.hideCards(cardsList); */
       let countryQueryInput = document.getElementById("country-input").value;
       let sigla = this.controller.getAbbreviation(countryQueryInput, data);
       this.renderNewsCountries(sigla);
     });
   };
 
+  async renderSubjectQuery(subjectQueryInput) {
+    let info = await this.controller.getSubjectQueryNewsApi(subjectQueryInput);
+    let data = info.articles;
+    this.createCards(data, "Salvar", (noticia) => {
+      this.clickBotao(noticia);
+    });
+  }
   async renderNewsCountries(sigla) {
     let info = await this.controller.getCountryQueryNewsApi(sigla);
     let data = info.articles;
@@ -53,7 +58,6 @@ export class NewsView {
 
   hideCard(card) {
     card.remove();
-    // card.parentNode.removeChild(card);
   }
   /**Creates cards in the html page by length data from api
    * @param {Object} data - data returns from api
@@ -61,7 +65,6 @@ export class NewsView {
    * @param {Function} callback - Function callback click button
    */
   createCards(data, nameButton, callback) {
-    console.log(data);
     let loader = document.getElementById("loader");
     loader.style.display = "none";
     document.getElementById("cards").innerHTML = "";
@@ -90,7 +93,6 @@ export class NewsView {
    */
   clickBotao(news) {
     this.controller.save(news);
-    //console.log(noticia.getContent())
   }
   /**
    * Fill cards with data from api after of criating cards
@@ -101,7 +103,6 @@ export class NewsView {
   setNewsCards(news, callback) {
     const container = document.getElementsByClassName("container");
 
-    console.log(news.length);
     for (let i = 0; i < news.length; i++) {
       var cards = container.cards.children;
       let card = cards[i];
@@ -109,7 +110,6 @@ export class NewsView {
       contentCard[0].children[0].children[0].href = news[i].getUrl();
       contentCard[0].children[0].children[0].innerHTML = news[i].getTitle();
       let content = contentCard[1].children;
-      console.log(news[i].getDescription());
       content[0].innerHTML = news[i].getDescription();
       content[1].src = news[i].getUrlImage();
 
