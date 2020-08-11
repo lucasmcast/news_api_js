@@ -15,40 +15,45 @@ export class CardModel{
     /**
      * Creates card for render in the page
      * 
-     * @param {DOMElement} button button of card
+     * @param {News} news - Object News 
+     * @param {String} nameButton - name for creates button
+     * @param {Function} callback - function for click button
+     * 
+     * @returns ReactElement
      */
-    createCard(news, button){
-        const link = React.createElement('a', {href: news.getUrl()}, news.getTitle());
-        const title = React.createElement('span', null, link);
+    createCard(news, nameButton, callback){
+        const link = React.createElement('a', {key: Math.random().toString(), href: news.getUrl()}, news.getTitle());
+        const title = React.createElement('span', {key: Math.random().toString()} , link);
         const cardHeader = React.createElement(
             'div', 
             {
+                key: Math.random().toString(),
                 className: "card-header"
             }, 
             [title]
         );
         
-        const description = React.createElement('p', null, news.getDescription());
-        const img = React.createElement('img', {src: news.getUrlImage()});
+        const description = React.createElement('p', {key: Math.random().toString()}, news.getDescription());
+        const img = React.createElement('img', {key: Math.random().toString(), src: news.getUrlImage()});
         
         const cardContent = React.createElement(
             'div', 
             {
+                key: Math.random().toString(),
                 className: "card-content"
             }, 
             [description, img]
         );
         
-        const published = React.createElement('span', {className : 'card-published'}, news.getPublishedAt());
-        const author = React.createElement('span', {className: 'card-author'}, news.getAuthor());
+        const published = React.createElement('span', {key: Math.random().toString(), className : 'card-published'}, news.getPublishedAt());
+        const author = React.createElement('span', {key: Math.random().toString(), className: 'card-author'}, news.getAuthor());
         
-        /* button.addEventListener("click", function() {
-            callback(news);
-        }); */
+        const button = this.createButton(nameButton, callback, news);
         
         const cardFooter = React.createElement(
             'div',
-            {
+            {   
+                key: Math.random().toString(),
                 className : "card-footer"
             },
             [published, author, button]
@@ -56,6 +61,7 @@ export class CardModel{
         const card = React.createElement(
             'div', 
             {
+                key: Math.random().toString(),
                 className: "card"
             }, 
             [cardHeader, cardContent, cardFooter]
@@ -65,6 +71,10 @@ export class CardModel{
         return card;
     } 
     
+    /**Render cards by ReactElement from createCards
+     * 
+     * @param {ReactElement} cards 
+     */
     setCards(cards){
         ReactDOM.render(cards, this.cards)
     }
@@ -72,13 +82,15 @@ export class CardModel{
      * Creates button and put button value and creates class css
      * 
      * @param {String} nameButton name of button for creates class css and button value
-     * 
+     * @param {Function} callback function for click button
+     * @param {News} news class model News
      * @returns DOMElement  
      */
     createButton(nameButton, callback, news){
         let button = React.createElement(
             'button', 
             {
+                key: Math.random().toString(),
                 className: 'btn-'+nameButton.toLocaleLowerCase(),
                 onClick: () => {callback(news)}
             }, 

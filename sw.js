@@ -1,17 +1,17 @@
 var cacheName = "news-api";
 var fileTocache = [
-  // "/",
-  // "/index.html",
-  // "/favorites.html",
-  // "/css/reset.css",
-  // "/css/style.css",
-  // "/js/app.js",
-  // "/js/db.js",
-  // "/js/favoritesView.js",
-  // "/js/newsController.js",
-  // "/js/newsDAO.js",
-  // "/js/newsModel.js",
-  // "/js/cardModel.js",
+    "/",
+    "/index.html",
+    "/favorites.html",
+    "/css/reset.css",
+    "/css/style.css",
+    "/js/app.js",
+    "/js/db.js",
+    "/js/favoritesView.js",
+    "/js/newsController.js",
+    "/js/newsDAO.js",
+    "/js/newsModel.js",
+    "/js/cardModel.js"
 ];
 
 //Faz a instalação do cache

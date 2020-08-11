@@ -65,6 +65,7 @@ export class NewsView {
     let cards = [];
     let qtdData = data.length;
     let card = new CardModel();
+    
     for (let i = 0; i < qtdData; i++) {
       let noticia = new News();
       noticia.setTitle(data[i].title);
@@ -75,8 +76,7 @@ export class NewsView {
       noticia.setUrlImage(data[i].urlToImage);
       noticia.setUrl(data[i].url);
 
-      let buttonSalvar = card.createButton(nameButton, callback, noticia);
-      cards.push(card.createCard(noticia, buttonSalvar));
+      cards.push(card.createCard(noticia, nameButton, callback));
     }
     card.setCards(cards);
 

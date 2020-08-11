@@ -26,9 +26,20 @@ export class NewsDAO {
     return fetch(url);
   }
 
+  /**
+   * Generate url for API
+   * @param {EndPoint} endPoint - Object for to build url 
+   */
   generateURL(endPoint){
-    
+    let url = this.baseUrl;
+  
+    let functionEndPoint = endPoint.getFunction();
+    let query = endPoint.getQuery();
+
+    url =+ `${functionEndPoint}?${query}&${this.apiKey}`
+    return url
   }
+  
   getCountryQueryNewsApi(country) {
     var url =
       this.baseUrl +

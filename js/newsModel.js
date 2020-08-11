@@ -64,11 +64,12 @@ export class News{
     }
 
     /**
-     * @TODO manipulate string for date
      * @param {String} publishedAt 
      */
     setPublishedAt(publishedAt){
-        this.publishedAt = publishedAt;
+        let stringReplace = publishedAt.replace(/T/g, " ").replace(/Z/g, "")
+      
+        this.publishedAt = stringReplace;
     }
 
     getPublishedAt(){
